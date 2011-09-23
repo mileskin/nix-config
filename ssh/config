@@ -1,0 +1,26 @@
+# SSH proxy through local forward
+# For this to be effective you need to start listening the local port:
+# ssh -fN github-proxy
+Host github-proxy
+    HostName corporate.proxy.host
+    user mileskin
+    Compression no
+    LocalForward 2221 github.com:22
+
+# For github access connect to local forward port defined above
+Host github.com
+     Hostname 127.0.0.1
+     Port 2221
+
+# Using an 'official' proxy for some service
+Host *gitorious.org
+    HostName dedicated.corporate.proxy.host
+    Port 443 
+
+# Connecting to some hosts without need to give user
+# 'miki@tunkki$ ssh turku1' instead of 'miki@tunkki$ ssh project-admin@turku1'
+Host hanko* turku*
+    User project-admin
+    Ciphers arcfour
+    GSSAPIAuthentication no
+
